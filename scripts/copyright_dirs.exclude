@@ -1,0 +1,9 @@
+/\.git
+/\.idea
+/\.tox
+/__pycache__
+/*egg-info
+/assets
+/build
+/debian
+/doc

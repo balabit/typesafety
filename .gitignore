@@ -1,0 +1,30 @@
+__pycache__
+*.pyc
+
+# Automatically generated documentation
+doc/source/typesafety_modules.rst
+
+# Build-related files
+build/
+debian/files
+debian/typesafety.debhelper.log
+debian/typesafety.substvars
+debian/typesafety/
+typesafety.egg-info/
+
+# Coverage information
+.coverage
+coverage.*
+htmlcov/
+
+# Nose output
+nosetests.xml
+
+# PyLint files
+doc/reports/
+pylint_ext_import-graph.dot
+pylint_import_graph.dot
+pylint_int_import-graph.dot
+
+# tox directory
+.tox

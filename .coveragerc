@@ -1,0 +1,6 @@
+[run]
+omit = setup.py
+include = typesafety/*
+
+[xml]
+output = ./coverage.xml
