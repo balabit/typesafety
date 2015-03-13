@@ -30,14 +30,13 @@ except ImportError:
 setup(
     name="typesafety",
     description="Type safety checker for Python3",
-    long_description=\
-    """
-    Typesafety is a tool for writing type-checked code in Python. In languages
-    like C++, Java, etc., this is a language-level feature, but Python has no
-    such feature. With the advent of annotations it is however possible to write
-    code with type notations. Typesafety is a means to enforce that those notations
-    are valid.
-    """,
+    long_description= """\
+Typesafety is a tool for writing type-checked code in Python. In languages
+like C++, Java, etc., this is a language-level feature, but Python has no
+such feature. With the advent of annotations it is however possible to write
+code with type notations. Typesafety is a means to enforce that those notations
+are valid.
+""",
     license="LGPLv2+",
     version="1.0",
     author="Viktor Hercinger",
