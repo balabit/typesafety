@@ -2,6 +2,9 @@
 Usage of the typesafety tool
 ============================
 
+.. image:: https://travis-ci.org/balabit/typesafety.svg?branch=master
+       :target: https://travis-ci.org/balabit/typesafety
+
 Typesafety is a tool for Python (3.2 or newer) that - using annotations -
 checks if the arguments for function calls are valid. For example, consider
 the following piece of code:
