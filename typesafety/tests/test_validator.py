@@ -165,3 +165,14 @@ class TestValidator(unittest.TestCase):
             pass
 
         self.assertRaises(TypesafetyError, Validator(func_has_required_arg))
+
+    def test_skip_typesafety_check_for_function(self):
+        def skip_typesafety_check(x: int) -> int:
+            return "string"
+
+        skip_typesafety_check.typesafety_skip = True
+
+        self.assertEqual(
+            skip_typesafety_check,
+            Validator.decorate(skip_typesafety_check)
+        )
