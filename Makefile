@@ -9,9 +9,6 @@ TESTDIRS = typesafety/
 .PHONY: pre-commit
 pre-commit: codingstandards check
 
-.PHONY: pre-merge
-pre-merge: pre-commit documentation
-
 .PHONY: check
 check: tests features
 
@@ -27,10 +24,6 @@ features:
 codingstandards: check-copyright
 	$(PEP8) --repeat $(TESTDIRS)
 	$(PYLINT) -f parseable --rcfile=.pylintrc $(TESTDIRS)
-
-.PHONY: documentation
-documentation:
-	make -C doc html
 
 .PHONY: check-copyright
 check-copyright:
