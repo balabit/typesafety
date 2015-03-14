@@ -56,3 +56,12 @@ def assert_failure(context):
 
     assert_in(expected_output, output, "Unexpected output of {!r}".format(command))
     assert_not_equal(0, return_code, "Unexpected return code of {!r}".format(command))
+
+
+@then('it must pass')
+def assert_success(context):
+    command, return_code, output = context.commands[-1]
+
+    assert_equal(
+        0, return_code,
+        "Unexpected return code of {!r}\nSTDOUT:\n{}".format(command, output))
