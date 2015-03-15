@@ -160,12 +160,21 @@ class Validator(object):
             if not self.__is_valid(value, validator):
                 key_name = repr(key)
                 func_name = self.__function.__name__
+                annotation = self.__argument_annotation.get(key)
                 message = self.TYPE_ERROR_MESSAGE.format(
                     key_name,
                     func_name,
-                    self.__argument_annotation.get(key).__name__,
+                    self.__format_expectation(annotation),
                     value.__class__.__name__)
                 raise TypesafetyError(message)
+
+    def __format_expectation(self, annotation):
+        if isinstance(annotation, tuple):
+            return "({})".format(
+                ", ".join(self.__format_expectation(a) for a in annotation)
+            )
+
+        return annotation.__name__
 
     def validate_return_value(self, retval):
         '''
