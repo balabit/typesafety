@@ -79,7 +79,8 @@ class Validator(object):
         * a proxy function that will execute the validation.
         '''
 
-        if cls.is_function_validated(function):
+        should_skip = getattr(function, 'typesafety_skip', False)
+        if cls.is_function_validated(function) or should_skip:
             return function
 
         validator = cls(function)

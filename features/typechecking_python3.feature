@@ -60,3 +60,33 @@ Feature: type checking Python 3 code
           """
           typesafety.validator.TypesafetyError: Return value of function some_function is invalid
           """
+
+  Scenario: marking a function to be skipped
+    Given that "skipped_function.py" contains the following code:
+          """
+          def unchecked(x: int) -> int:
+              return "not an int"
+
+          unchecked.typesafety_skip = True
+
+          def checked(x: int) -> int:
+              return "not an int"
+          """
+      And that "someprogram.py" contains the following code:
+          """
+          import typesafety; typesafety.activate(filter_func=lambda _: True)
+
+          from skipped_function import unchecked, checked
+
+          unchecked("hello")
+
+          try:
+              checked(1)
+
+          except typesafety.TypesafetyError as exc:
+              exit(0)
+
+          exit(1)
+          """
+     When "python3 someprogram.py" is run
+     Then it must pass

@@ -26,7 +26,7 @@ any of the annotations does not conform to this rule the annotation
 will be ignored.
 '''
 
-from .validator import Validator
+from .validator import Validator, TypesafetyError
 from .finder import ModuleFinder
 
 
@@ -101,4 +101,4 @@ def deactivate():
     Typesafety.instance().deactivate()
 
 
-__all__ = ['Typesafety', 'activate', 'deactivate']
+__all__ = ['Typesafety', 'TypesafetyError', 'activate', 'deactivate']

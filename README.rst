@@ -80,6 +80,25 @@ Before importing ``testmod``, we need to enable typesafety:
 appropriate, built-in ``TypeError`` since raising a ``TypeError`` would cause
 tests asserting for ``TypeError`` to pass if the arguments are wrong.
 
+Disabling typesafety checks for certain functions
+.................................................
+
+If you are using typesafety with another lib that uses annotations, it might
+cause some interference. In this case, you should be able to disable typesafety
+checking for certain functions. But how to do this?
+
+The preferred way is simply to mark the function for skipping:
+
+.. code-block:: python
+
+    def dont_check(x: (int, 'This annotation has another meaning') -> (float, 'As does this'):
+        return 'Definitely not a float'
+
+    dont_check.typesafety_skip = True
+
+When the ``typesafety_skip`` attribute is set for a function, it will not check
+the calls to that function.
+
 Specifying typesafety checks
 ----------------------------
 
