@@ -189,3 +189,17 @@ class TestValidator(unittest.TestCase):
             validator(4.2)
 
         self.assertIn("expected: (str, int)", str(error.exception))
+
+    def test_validating_multiple_types_or_none(self):
+        def func(x: (str, int, None)):
+            pass
+
+        validator = Validator(func)
+        validator("str")
+        validator(42)
+        validator(None)
+
+        with self.assertRaises(TypesafetyError) as error:
+            validator(4.2)
+
+        self.assertIn("expected: (str, int, None)", str(error.exception))

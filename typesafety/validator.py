@@ -174,6 +174,9 @@ class Validator(object):
                 ", ".join(self.__format_expectation(a) for a in annotation)
             )
 
+        if annotation is None:
+            return "None"
+
         return annotation.__name__
 
     def validate_return_value(self, retval):
@@ -269,6 +272,9 @@ class Validator(object):
         if hasattr(validator, '__call__'):
             return validator(value)
 
+        if validator is None:
+            return value is None
+
         # This line will probably never be reached
         return True
 
@@ -283,6 +289,9 @@ class Validator(object):
             return True
 
         if callable(validator):
+            return True
+
+        if validator is None:
             return True
 
         return False
