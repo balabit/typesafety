@@ -22,6 +22,7 @@ import os.path
 import datetime
 import re
 import stat
+import sys
 
 
 def load_pattern_file(fn):
@@ -179,31 +180,42 @@ def update_file_header(filename):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Copyright header manager script')
-    group = parser.add_mutually_exclusive_group()
+    group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--update', action='store_true',
                        help='Update existing headers and add missing ones.')
     group.add_argument('--check', action='store_true',
                        help='Check existence and correctness of the header copyright information.')
-    parser.add_argument('path', help='Path(s) to check the files in.')
+    parser.add_argument('path', help='Path to check the files in.')
 
     options = parser.parse_args()
 
     rc = 0
     if options.check:
+        header_printed = False
         for filename in locate_files(options.path):
             try:
                 check_file_header(filename)
 
             except CommentError as exc:
-                print('{}: {}'.format(exc.filename, exc.message))
+                if not header_printed:
+                    header_printed = True
+                    print('Errors:', file=sys.stderr)
+
+                print('  {}: {}'.format(exc.filename, exc.message), file=sys.stderr)
                 rc = 1
+
+        if rc != 0:
+            print(file=sys.stderr)
+            print('You should run the following command:', file=sys.stderr)
+            print(file=sys.stderr)
+            print('  $ {} --update {}'.format(sys.argv[0], options.path), file=sys.stderr)
+            print(file=sys.stderr)
 
     elif options.update:
         for filename in locate_files(options.path):
             update_file_header(filename)
 
     else:
-        raise NotImplementedError
-        rc = 1
+        assert False, "Not reachable code"
 
     exit(rc)
