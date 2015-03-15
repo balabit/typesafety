@@ -61,6 +61,28 @@ Feature: type checking Python 3 code
           typesafety.validator.TypesafetyError: Return value of function some_function is invalid
           """
 
+  Scenario: allowing multiple types
+    Given that "somelib.py" contains the following code:
+          """
+          def some_function(x: (str, int)):
+              return x
+          """
+      And that "someprogram.py" contains the following code:
+          """
+          import typesafety; typesafety.activate(filter_func=lambda _: True)
+
+          from somelib import some_function
+
+          some_function("some str")
+          some_function(42)
+          some_function(4.2)
+          """
+     When "python3 someprogram.py" is run
+     Then it must fail:
+          """
+          typesafety.validator.TypesafetyError: Argument 'x' of function 'some_function' is invalid (expected: (str, int); got: float)
+          """
+
   Scenario: marking a function to be skipped
     Given that "skipped_function.py" contains the following code:
           """

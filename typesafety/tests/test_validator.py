@@ -176,3 +176,16 @@ class TestValidator(unittest.TestCase):
             skip_typesafety_check,
             Validator.decorate(skip_typesafety_check)
         )
+
+    def test_validating_multiple_types(self):
+        def func(x: (str, int)):
+            pass
+
+        validator = Validator(func)
+        validator("str")
+        validator(42)
+
+        with self.assertRaises(TypesafetyError) as error:
+            validator(4.2)
+
+        self.assertIn("expected: (str, int)", str(error.exception))
