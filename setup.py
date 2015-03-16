@@ -67,7 +67,8 @@ are valid.
     entry_points={
         'nose.plugins.0.10': [
             'typesafety = typesafety.noseplugin:TypesafetyPlugin'
-        ]
+        ],
+        'pytest11': ['pytest_typesafety = typesafety.pytest_typesafety'],
     },
     requires=[
         'nose',
