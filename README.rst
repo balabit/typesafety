@@ -37,17 +37,26 @@ Testing with typesafety
 =======================
 
 Typesafety is meant to be used during testing. True, the checker can be
-turned on in production code but the performace slowdown can make this
+turned on in production code but the performance slowdown can make this
 undesirable.
 
-Currently, our preferred tool for running unit tests is nosetests. Using
-the typesafety tool with nose is very simple:
+Typesafety comes with builtin plugins for two popular testing frameworks,
+`nosetests <https://nose.readthedocs.org>`_ and `pytest <http://pytest.org/>`_
+(our preferred tool at Balabit is nosetests), and using it is very simple.
+
+For nose:
 
 ::
 
    $ nosetests --enable-typesafety mymodule
 
-And voila! Type checking is enabled for the module ``mymodule``.
+And similarly for pytest:
+
+::
+
+   $ py.test --enable-typesafety mymodule
+
+And voila! Type checking is enabled for the module ``mymodule`` during tests.
 
 Enabling typesafety manually
 ----------------------------
