@@ -36,6 +36,12 @@ def pytest_configure(config):
         typesafety.activate(filter_func=filter_func)
 
 
+def pytest_unconfigure(config):
+    if config.getoption('enable_typesafety'):
+        import typesafety
+        typesafety.deactivate()
+
+
 def __check_need_activate(module_name, enabled_for):
     module_name = module_name.split('.')
     return any(
