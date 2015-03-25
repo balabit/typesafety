@@ -15,47 +15,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from . import mockmodule2
-from .version import is_above_version
-import collections
-import sys
-
-# External objects not native to this module
-from .externalmodule import UndecoratedClass, undecorated_function
+# External module whose objects should not be decorated when another
+# module imports some of its objects.
 
 
-if not is_above_version('3.2'):
-    class ClassWithSlots:
-        __slots__ = ['mutable']
-
-        @property
-        def immutable(self):
-            return 1
-
-        @property
-        def mutable(self):
-            return 2
+class UndecoratedClass:
+    def method(self, argument: int) -> int:
+        return argument * 2
 
 
-def function():
-    pass
-
-
-class ModuleClass(object):
-    def __init__(self):
-        super(ModuleClass, self).__init__()
-
-    def method(self):
-        pass
-
-    @property
-    def value(self):
-        pass
-
-    @classmethod
-    def clsmethod(cls):
-        pass
-
-    @staticmethod
-    def staticmethod():
-        pass
+def undecorated_function(argument: int) -> int:
+    return argument * 3

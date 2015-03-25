@@ -51,7 +51,11 @@ class ModuleDecorator(object):
         self.__decorator = decorator
 
     def decorate(self, module):
-        self.__decorate(module, use_dict=module.__dict__)
+        if inspect.isclass(module):
+            self.__decorate_class(module, use_dict=module.__dict__)
+
+        else:
+            self.__decorate_module(module, use_dict=module.__dict__)
 
     def __is_attribute_mutable(self, object_dict, attr):
         if '__slots__' not in object_dict:
@@ -59,26 +63,39 @@ class ModuleDecorator(object):
 
         return attr in object_dict['__slots__']
 
-    def __decorate(self, module, *, use_dict):
+    def __decorate_module(self, module, *, use_dict):
+        for key, value in self.__iterate_decorables(use_dict):
+            if self.__is_object_native(module, value):
+                continue
+
+            self.__decorate_item(module, key, value)
+
+    def __is_object_native(self, module, obj):
+        return hasattr(obj, '__module__') and obj.__module__ != module.__name__
+
+    def __decorate_class(self, cls, *, use_dict):
+        for key, value in self.__iterate_decorables(use_dict):
+            self.__decorate_item(cls, key, value)
+
+    def __iterate_decorables(self, use_dict):
         for key, value in use_dict.items():
             if not self.__is_attribute_mutable(use_dict, key):
                 continue
 
-            if inspect.isfunction(value):
-                self.__decorate_function(module, key, value)
+            yield key, value
 
-            elif inspect.isclass(value):
-                self.__decorate(value, use_dict=value.__dict__)
+    def __decorate_item(self, module, key, value):
+        if inspect.isfunction(value):
+            self.__decorate_function(module, key, value)
 
-            elif inspect.ismodule(value):
-                if self.__submodule_of(value, module):
-                    self.__decorate(value, use_dict=value.__dict__)
+        elif inspect.isclass(value):
+            self.__decorate_class(value, use_dict=value.__dict__)
 
-            elif isinstance(value, property):
-                self.__decorate_property(module, key, value)
+        elif isinstance(value, property):
+            self.__decorate_property(module, key, value)
 
-            elif isinstance(value, (staticmethod, classmethod)):
-                self.__decorate_special_method(module, key, value)
+        elif isinstance(value, (staticmethod, classmethod)):
+            self.__decorate_special_method(module, key, value)
 
     def __decorate_function(self, module, key, value):
         setattr(module, key, self.__decorator(value))
@@ -106,7 +123,7 @@ class ModuleDecorator(object):
         setattr(module, key, decorated)
 
     def __submodule_of(self, basemodule, submodule):
-        return submodule.__name__.startswith(basemodule.__name__ + '.')
+        return submodule.startswith(basemodule + '.')
 
 
 def decorate_module(module, *, decorator):
