@@ -65,12 +65,12 @@ class ModuleDecorator(object):
 
     def __decorate_module(self, module, *, use_dict):
         for key, value in self.__iterate_decorables(use_dict):
-            if self.__is_object_native(module, value):
+            if self.__is_object_external(module, value):
                 continue
 
             self.__decorate_item(module, key, value)
 
-    def __is_object_native(self, module, obj):
+    def __is_object_external(self, module, obj):
         return hasattr(obj, '__module__') and obj.__module__ != module.__name__
 
     def __decorate_class(self, cls, *, use_dict):
