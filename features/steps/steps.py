@@ -30,7 +30,7 @@ assert_equal.__self__.maxDiff = None
 @given('that "{file_name}" contains the following code')
 def write_file(context, file_name):
     with open(os.path.join(context.test_dir, file_name), "w") as f:
-        f.write(context.text)
+        print(context.text, file=f)
 
 
 @when('"{command}" is run')
@@ -64,4 +64,5 @@ def assert_success(context):
 
     assert_equal(
         0, return_code,
-        "Unexpected return code of {!r}\nSTDOUT:\n{}".format(command, output))
+        "Unexpected return code of {!r}\nSTDOUT:\n{}".format(command, output)
+    )

@@ -76,3 +76,7 @@ class TestAutodecorate(unittest.TestCase):
     def test_immutable_class_attributes_are_not_decorated(self):
         self.assertEquals(1, self._module.ClassWithSlots().immutable)
         self.assertEquals(1234, self._module.ClassWithSlots().mutable)
+
+    def test_dont_decorate_objects_not_native_to_the_module(self):
+        self.assertEqual(2, self._module.UndecoratedClass().method(1))
+        self.assertEqual(3, self._module.undecorated_function(1))
