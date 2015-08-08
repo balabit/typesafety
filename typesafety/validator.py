@@ -15,6 +15,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+import functools
 import inspect
 
 
@@ -89,11 +90,10 @@ class Validator(object):
            not validator.need_validate_return_value:
             return function
 
+        @functools.wraps(function)
         def __wrapper(*args, **kwargs):
             return validator(*args, **kwargs)
 
-        __wrapper.__name__ = function.__name__
-        __wrapper.__doc__ = function.__doc__
         __wrapper.__validator__ = validator
 
         return __wrapper
