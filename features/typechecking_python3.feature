@@ -58,7 +58,7 @@ Feature: type checking Python 3 code
      When "python3 someprogram.py" is run
      Then it must fail:
           """
-          typesafety.validator.TypesafetyError: Return value of function some_function is invalid
+          typesafety.validator.TypesafetyError: Return value of function 'some_function' is invalid (expected: int; got: str)
           """
 
   Scenario: allowing multiple types
