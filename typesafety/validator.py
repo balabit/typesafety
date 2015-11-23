@@ -46,8 +46,10 @@ class Validator(object):
     as they might belong to a different purpose.
     '''
 
-    TYPE_ERROR_MESSAGE = "Argument {0} of function {1!r} is invalid " + \
-                         "(expected: {2}; got: {3})"
+    ARG_TYPE_ERROR_MESSAGE = "Argument {0} of function {1!r} is invalid " + \
+                             "(expected: {2}; got: {3})"
+    RET_TYPE_ERROR_MESSAGE = "Return value of function {0!r} is invalid " + \
+                             "(expected: {1}; got: {2})"
 
     @classmethod
     def get_function_validator(cls, function):
@@ -161,7 +163,7 @@ class Validator(object):
                 key_name = repr(key)
                 func_name = self.__function.__name__
                 annotation = self.__argument_annotation.get(key)
-                message = self.TYPE_ERROR_MESSAGE.format(
+                message = self.ARG_TYPE_ERROR_MESSAGE.format(
                     key_name,
                     func_name,
                     self.__format_expectation(annotation),
@@ -192,7 +194,11 @@ class Validator(object):
 
         if not self.__is_valid(retval, self.__return_annotation):
             func_name = self.__function.__name__
-            msg = "Return value of function {} is invalid".format(func_name)
+            msg = self.RET_TYPE_ERROR_MESSAGE.format(
+                func_name,
+                self.__format_expectation(self.__return_annotation),
+                retval.__class__.__name__
+            )
             raise TypesafetyError(msg)
 
     def __call__(self, *args, **kwargs):
