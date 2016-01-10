@@ -131,7 +131,7 @@ class TestValidator(unittest.TestCase):
         def func_dont_validate():
             pass
 
-        self.assertEquals(
+        self.assertEqual(
             func_dont_validate,
             Validator.decorate(func_dont_validate)
         )
@@ -140,7 +140,7 @@ class TestValidator(unittest.TestCase):
         def func_validate() -> int:
             pass
 
-        self.assertEquals(
+        self.assertEqual(
             func_validate,
             Validator.undecorate(Validator.decorate(func_validate))
         )
@@ -149,7 +149,7 @@ class TestValidator(unittest.TestCase):
         def func_dont_validate():
             pass
 
-        self.assertEquals(
+        self.assertEqual(
             func_dont_validate,
             Validator.undecorate(func_dont_validate)
         )

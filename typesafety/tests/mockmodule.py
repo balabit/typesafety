@@ -15,10 +15,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+import sys
+import collections
+
 from . import mockmodule2
 from .version import is_above_version
-import collections
-import sys
 
 # External objects not native to this module
 from .externalmodule import UndecoratedClass, undecorated_function

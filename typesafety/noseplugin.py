@@ -17,8 +17,9 @@
 
 import re
 import os.path
-import typesafety
 import nose
+
+import typesafety
 
 
 # Monkey-patching the _exc_info_to_string is the only simple way to influence

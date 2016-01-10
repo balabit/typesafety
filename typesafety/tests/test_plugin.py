@@ -15,10 +15,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import nose
 import unittest
 import optparse
 import shlex
+import nose
 import mock
 
 from ..noseplugin import TypesafetyPlugin
