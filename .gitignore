@@ -1,5 +1,6 @@
 __pycache__
 *.pyc
+typesafety/.cache
 
 # Automatically generated documentation
 doc/source/typesafety_modules.rst

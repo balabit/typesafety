@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2015 BalaBit
+# Copyright (c) 2013-2016 BalaBit
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -131,7 +131,7 @@ class TestValidator(unittest.TestCase):
         def func_dont_validate():
             pass
 
-        self.assertEquals(
+        self.assertEqual(
             func_dont_validate,
             Validator.decorate(func_dont_validate)
         )
@@ -140,7 +140,7 @@ class TestValidator(unittest.TestCase):
         def func_validate() -> int:
             pass
 
-        self.assertEquals(
+        self.assertEqual(
             func_validate,
             Validator.undecorate(Validator.decorate(func_validate))
         )
@@ -149,7 +149,7 @@ class TestValidator(unittest.TestCase):
         def func_dont_validate():
             pass
 
-        self.assertEquals(
+        self.assertEqual(
             func_dont_validate,
             Validator.undecorate(func_dont_validate)
         )

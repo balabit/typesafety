@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2015 BalaBit
+# Copyright (c) 2013-2016 BalaBit
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -17,8 +17,9 @@
 
 import re
 import os.path
-import typesafety
 import nose
+
+import typesafety
 
 
 # Monkey-patching the _exc_info_to_string is the only simple way to influence
