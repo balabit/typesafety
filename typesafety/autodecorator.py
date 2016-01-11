@@ -37,6 +37,7 @@ Called function mymethod
 '''
 
 import inspect
+import warnings
 
 
 class ModuleDecorator(object):
@@ -98,7 +99,7 @@ class ModuleDecorator(object):
             self.__decorate_special_method(module, key, value)
 
     def __decorate_function(self, module, key, value):
-        setattr(module, key, self.__decorator(value))
+        self.__set_attribute(module, key, self.__decorator(value))
 
     def __decorate_property(self, module, key, value):
         fget = None
@@ -114,16 +115,37 @@ class ModuleDecorator(object):
         if value.fdel is not None:
             fdel = self.__decorator(value.fdel)
 
-        setattr(module, key, property(fget=fget, fset=fset, fdel=fdel))
+        self.__set_attribute(
+            module, key, property(fget=fget, fset=fset, fdel=fdel)
+        )
 
     def __decorate_special_method(self, module, key, value):
         func = self.__decorator(value.__func__)
         decorated = value.__class__(func)
 
-        setattr(module, key, decorated)
+        self.__set_attribute(module, key, decorated)
 
     def __submodule_of(self, basemodule, submodule):
         return submodule.startswith(basemodule + '.')
+
+    def __set_attribute(self, module, key, value):
+        try:
+            setattr(module, key, value)
+
+        # We want to catch all errors here since any problems with setting
+        # a module attribute to the decorated function is non-fatal.
+        # pylint: disable=W0702
+        except:
+            if hasattr(module, '__module__'):
+                name = '{}.{}'.format(module.__module__, module.__name__)
+
+            else:
+                name = module.__name__
+
+            warnings.warn(
+                'Could not decorate {}.{}'.format(name, key),
+                category=RuntimeWarning
+            )
 
 
 def decorate_module(module, *, decorator):
