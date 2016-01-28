@@ -15,11 +15,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import sys
 import unittest
 
 from typesafety.finder import ModuleFinder
-from typesafety.autodecorator import decorate_module
 
 
 def mock_decorator(func):

@@ -19,7 +19,6 @@ import unittest
 import optparse
 import shlex
 import nose
-import mock
 
 from ..noseplugin import TypesafetyPlugin
 
