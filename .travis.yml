@@ -1,5 +1,6 @@
 language: python
 python: 3.4
+sudo: false
 
 env:
   - TOX_ENV=py32
@@ -15,3 +16,7 @@ install:
 
 script:
   - tox -e $TOX_ENV
+
+cache:
+  directories:
+    - $HOME/.cache/pip
