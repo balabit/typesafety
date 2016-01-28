@@ -7,6 +7,10 @@ env:
   - TOX_ENV=py34
 
 install:
+  - case ${TOX_ENV} in
+      py32) pip install virtualenv\<14 --upgrade;;
+      *) pip install virtualenv --upgrade;;
+    esac
   - pip install tox
 
 script:
