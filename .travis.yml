@@ -1,5 +1,6 @@
 language: python
 python: 3.4
+sudo: false
 
 env:
   - TOX_ENV=py32
@@ -7,7 +8,15 @@ env:
   - TOX_ENV=py34
 
 install:
+  - case ${TOX_ENV} in
+      py32) pip install virtualenv\<14 --upgrade;;
+      *) pip install virtualenv --upgrade;;
+    esac
   - pip install tox
 
 script:
   - tox -e $TOX_ENV
+
+cache:
+  directories:
+    - $HOME/.cache/pip
