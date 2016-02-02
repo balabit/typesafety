@@ -14,6 +14,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+from typesafety import TypesafetyError
 
 
 def pytest_addoption(parser):
@@ -40,6 +41,21 @@ def pytest_unconfigure(config):
     if config.getoption('enable_typesafety'):
         import typesafety
         typesafety.deactivate()
+
+
+def pytest_runtest_makereport(item, call):
+    """
+    Use report maker hook for early traceback cleanup
+
+    Have to remove typesafety from trace before py.test removes itself, for
+    avoid empty trace.
+    """
+
+    excinfo = call.excinfo
+    if not excinfo or excinfo.type is not TypesafetyError:
+        return
+
+    excinfo.traceback = excinfo.traceback.filter()
 
 
 def __check_need_activate(module_name, enabled_for):
