@@ -100,7 +100,7 @@ The preferred way is simply to mark the function for skipping:
 
 .. code-block:: python
 
-    def dont_check(x: (int, 'This annotation has another meaning') -> (float, 'As does this'):
+    def dont_check(x: (int, 'This annotation has another meaning')) -> (float, 'As does this'):
         return 'Definitely not a float'
 
     dont_check.typesafety_skip = True
