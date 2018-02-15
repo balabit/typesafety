@@ -19,12 +19,13 @@ import unittest
 import collections
 
 from functools import wraps
+
+from ..sphinxautodoc import add_annotations_to_signature
 from .version import skip_above_version, skip_below_or_at_version
 
-from typesafety.sphinxautodoc import add_annotations_to_signature
 
-
-class TestAnnotatedDocsForMethodSignatures(unittest.TestCase):
+# Is a test suite, can have as many public methods as needed.
+class TestAnnotatedDocsForMethodSignatures(unittest.TestCase):  # pylint: disable=too-many-public-methods
     def test_only_functions_classes_and_and_methods_are_considered(self):
         self.__assert_signature_docs_override(
             None,
@@ -286,7 +287,7 @@ def function_with_annotated_varargs(an_int, *varargs: list, **varkwargs: dict):
     pass
 
 
-def function_with_complex_default_value(a_tuple: tuple=(1, 2, 3)):
+def function_with_complex_default_value(a_tuple: tuple = (1, 2, 3)):
     pass
 
 
@@ -329,8 +330,8 @@ class ExampleClass:
     def method_with_default_value(
             self,
             a_float: float,
-            an_int: int=42,
-            an_str: str=""
+            an_int: int = 42,
+            an_str: str = ""
     ):
         pass
 
@@ -340,7 +341,7 @@ class ExampleClass:
     def method_with_kwonly_arg(self, a_float: float, *, an_int: int):
         pass
 
-    def method_with_default_value_for_self(self=None, an_int: int=42):
+    def method_with_default_value_for_self(self=None, an_int: int = 42):
         pass
 
     def method_with_class_names(self, an_object: SomeClass) -> SomeClass:

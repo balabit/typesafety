@@ -80,7 +80,7 @@ class TypesafetyPlugin(nose.plugins.Plugin):
             '(useful when debugging typesafety)'
         )
 
-    def configure(self, options, config):
+    def configure(self, options, conf):
         if options.enable_typesafety:
             self.enabled = True
             self.__enabled_for = tuple(

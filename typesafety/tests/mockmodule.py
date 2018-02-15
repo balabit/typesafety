@@ -43,9 +43,6 @@ def function():
 
 
 class ModuleClass(object):
-    def __init__(self):
-        super(ModuleClass, self).__init__()
-
     def method(self):
         pass
 

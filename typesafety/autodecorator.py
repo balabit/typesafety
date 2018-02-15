@@ -135,7 +135,7 @@ class ModuleDecorator(object):
         # We want to catch all errors here since any problems with setting
         # a module attribute to the decorated function is non-fatal.
         # pylint: disable=W0702
-        except:
+        except:  # noqa
             if hasattr(module, '__module__'):
                 name = '{}.{}'.format(module.__module__, module.__name__)
 

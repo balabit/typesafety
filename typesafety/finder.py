@@ -141,8 +141,11 @@ class ModuleFinder(object):
         This will do nothing, since we use the system to locate a module.
         '''
 
+        loader = None
         if self.__filter is None or self.__filter(fullname):
-            return ModuleLoader(self, fullname, path)
+            loader = ModuleLoader(self, fullname, path)
+
+        return loader
 
     def load_module(self, loader):
         '''
