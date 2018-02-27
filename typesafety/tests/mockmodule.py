@@ -19,23 +19,9 @@ import sys
 import collections
 
 from . import mockmodule2
-from .version import is_above_version
 
 # External objects not native to this module
 from .externalmodule import UndecoratedClass, undecorated_function
-
-
-if not is_above_version('3.2'):
-    class ClassWithSlots:
-        __slots__ = ['mutable']
-
-        @property
-        def immutable(self):
-            return 1
-
-        @property
-        def mutable(self):
-            return 2
 
 
 def function():

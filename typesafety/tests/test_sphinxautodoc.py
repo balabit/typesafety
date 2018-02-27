@@ -21,7 +21,6 @@ import collections
 from functools import wraps
 
 from ..sphinxautodoc import add_annotations_to_signature
-from .version import skip_above_version, skip_below_or_at_version
 
 
 # Is a test suite, can have as many public methods as needed.
@@ -197,20 +196,6 @@ class TestAnnotatedDocsForMethodSignatures(unittest.TestCase):  # pylint: disabl
             ExampleClass.method_with_decorators
         )
 
-    @skip_above_version(
-        "3.3",
-        "For some reason, version(s) 3.3+ handle annotations of decorated "
-        "functions differently. In 3.4 this seems to be fixed."
-    )
-    def test_decorated_methods_should_not_trigger_inifinite_loop(self):
-        self.__assert_signature_docs_override(
-            ("(*args, **kwargs)", ""),
-            "method",
-            "ExampleClass.method_with_recursive_decorator",
-            ExampleClass.method_with_recursive_decorator
-        )
-
-    @skip_below_or_at_version("3.3", "See the exact explanation above")
     def test_decorated_methods_dont_trigger_inf_loop_but_return_none(self):
         self.__assert_signature_docs_override(
             None,
@@ -219,20 +204,6 @@ class TestAnnotatedDocsForMethodSignatures(unittest.TestCase):  # pylint: disabl
             ExampleClass.method_with_recursive_decorator
         )
 
-    @skip_above_version(
-        "3.3",
-        "For some reason, version(s) 3.3+ handle annotations of decorated " +
-        "functions differently. In 3.4 this seems to be fixed."
-    )
-    def test_decorated_methods_should_not_trigger_errors(self):
-        self.__assert_signature_docs_override(
-            ("(*args, **kwargs)", ""),
-            "method",
-            "ExampleClass.method_with_messed_up_decorator",
-            ExampleClass.method_with_messed_up_decorator
-        )
-
-    @skip_below_or_at_version("3.3", "See the exact explanation above")
     def test_decorated_methods_should_not_trigger_errors_but_return_none(self):
         self.__assert_signature_docs_override(
             None,

@@ -18,8 +18,6 @@
 import sys
 import unittest
 
-from .version import skip_above_version
-
 from ..autodecorator import decorate_module
 
 
@@ -66,17 +64,6 @@ class TestAutodecorate(unittest.TestCase):
 
         if fullname in sys.modules:
             del sys.modules[fullname]
-
-    @skip_above_version(
-        "3.2",
-        "Defining slots this way causes a ValueError, so they become " +
-        "unreachable for the autodecorator. Every other fix like this " +
-        "in other software simply removes slot entries " +
-        "like ClassWithSlots.mutable."
-    )
-    def test_immutable_class_attributes_are_not_decorated(self):
-        self.assertEqual(1, self._module.ClassWithSlots().immutable)
-        self.assertEqual(1234, self._module.ClassWithSlots().mutable)
 
     def test_dont_decorate_objects_not_native_to_the_module(self):
         self.assertEqual(2, self._module.UndecoratedClass().method(1))
