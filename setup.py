@@ -38,7 +38,7 @@ code with type notations. Typesafety is a means to enforce that those notations
 are valid.
 """,
     license="LGPLv2+",
-    version="1.0.3",
+    version="2.0.0",
     author="Viktor Hercinger",
     author_email="viktor.hercinger@balabit.com",
     maintainer="Viktor Hercinger",
