@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2016 BalaBit
+# Copyright (c) 2013-2018 Balabit
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -80,7 +80,7 @@ class TypesafetyPlugin(nose.plugins.Plugin):
             '(useful when debugging typesafety)'
         )
 
-    def configure(self, options, config):
+    def configure(self, options, conf):
         if options.enable_typesafety:
             self.enabled = True
             self.__enabled_for = tuple(

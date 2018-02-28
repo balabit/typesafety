@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2016 BalaBit
+# Copyright (c) 2013-2018 Balabit
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -28,12 +28,13 @@ def func_arg_validate(
     return 1
 
 
-class TestValidator(unittest.TestCase):
+# Is a test suite, can have as many public methods as needed.
+class TestValidator(unittest.TestCase):  # pylint: disable=too-many-public-methods
     def setUp(self):
         self._validator = Validator(func_arg_validate)
 
     def test_function_has_no_annotation(self):
-        def func_no_annotation(x, y, z):
+        def func_no_annotation(arg0, arg1, arg2):
             pass
 
         validator = Validator(func_no_annotation)
@@ -41,7 +42,7 @@ class TestValidator(unittest.TestCase):
         self.assertFalse(validator.need_validate_return_value)
 
     def test_function_has_arg_annotation(self):
-        def func_arg_annotated(x: type):
+        def func_arg_annotated(arg: type):
             pass
 
         validator = Validator(func_arg_annotated)
@@ -49,7 +50,7 @@ class TestValidator(unittest.TestCase):
         self.assertFalse(validator.need_validate_return_value)
 
     def test_function_has_ret_annotation(self):
-        def func_ret_annotated(x) -> type:
+        def func_ret_annotated(arg) -> type:
             pass
 
         validator = Validator(func_ret_annotated)
@@ -57,7 +58,7 @@ class TestValidator(unittest.TestCase):
         self.assertTrue(validator.need_validate_return_value)
 
     def test_invalid_annotations_are_ignored(self):
-        def func_ignore_annotation(x: 1) -> (2,):
+        def func_ignore_annotation(arg: 1) -> (2,):
             pass
 
         validator = Validator(func_ignore_annotation)
@@ -91,7 +92,7 @@ class TestValidator(unittest.TestCase):
         )
 
     def test_validate_arguments_without_annotations(self):
-        def func_no_annotation(x):
+        def func_no_annotation(arg):
             pass
 
         Validator(func_no_annotation).validate_arguments(1)
@@ -103,7 +104,7 @@ class TestValidator(unittest.TestCase):
         Validator(func_no_annotation).validate_return_value(1)
 
     def test_validate_with_ignored_annotations(self):
-        def func_ignore_annotation(x: 1):
+        def func_ignore_annotation(arg: 1):
             pass
 
         Validator(func_ignore_annotation).validate_arguments(dict(x=1))
@@ -167,7 +168,7 @@ class TestValidator(unittest.TestCase):
         self.assertRaises(TypesafetyError, Validator(func_has_required_arg))
 
     def test_skip_typesafety_check_for_function(self):
-        def skip_typesafety_check(x: int) -> int:
+        def skip_typesafety_check(arg: int) -> int:
             return "string"
 
         skip_typesafety_check.typesafety_skip = True
@@ -178,7 +179,7 @@ class TestValidator(unittest.TestCase):
         )
 
     def test_validating_multiple_types(self):
-        def func(x: (str, int)):
+        def func(arg: (str, int)):
             pass
 
         validator = Validator(func)
@@ -191,7 +192,7 @@ class TestValidator(unittest.TestCase):
         self.assertIn("expected: (str, int)", str(error.exception))
 
     def test_validating_multiple_types_or_none(self):
-        def func(x: (str, int, None)):
+        def func(arg: (str, int, None)):
             pass
 
         validator = Validator(func)

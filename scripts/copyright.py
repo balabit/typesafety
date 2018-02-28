@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# Copyright (c) 2013-2016 BalaBit
+# Copyright (c) 2013-2018 Balabit
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -49,10 +49,10 @@ EXCLUDE_FILES = load_pattern_file(os.path.join(BASE_PATH, 'copyright_files.exclu
 with open(os.path.join(BASE_PATH, 'copyright.txt')) as f:
     COPYRIGHT_TEXT = f.read()
 FILTER_EXTENSION = {'.py', '.sh'}
-BEGIN_PATTERN = re.compile(r"^Copyright \(c\) 2013-(20[0-9]{2}) BalaBit$")
+BEGIN_PATTERN = re.compile(r"^Copyright \(c\) 2013-(20[0-9]{2}) Balabit$")
 
 UPDATE_COPYRIGHT_HEADER = '''
-Copyright (c) 2013-{year} BalaBit
+Copyright (c) 2013-{year} Balabit
 {copyright}\
 '''.format(year=THIS_YEAR, copyright=COPYRIGHT_TEXT)
 

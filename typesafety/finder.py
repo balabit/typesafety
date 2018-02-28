@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2016 BalaBit
+# Copyright (c) 2013-2018 Balabit
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -141,8 +141,11 @@ class ModuleFinder(object):
         This will do nothing, since we use the system to locate a module.
         '''
 
+        loader = None
         if self.__filter is None or self.__filter(fullname):
-            return ModuleLoader(self, fullname, path)
+            loader = ModuleLoader(self, fullname, path)
+
+        return loader
 
     def load_module(self, loader):
         '''

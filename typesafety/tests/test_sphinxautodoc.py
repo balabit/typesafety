@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2016 BalaBit
+# Copyright (c) 2013-2018 Balabit
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -19,12 +19,12 @@ import unittest
 import collections
 
 from functools import wraps
-from .version import skip_above_version, skip_below_or_at_version
 
-from typesafety.sphinxautodoc import add_annotations_to_signature
+from ..sphinxautodoc import add_annotations_to_signature
 
 
-class TestAnnotatedDocsForMethodSignatures(unittest.TestCase):
+# Is a test suite, can have as many public methods as needed.
+class TestAnnotatedDocsForMethodSignatures(unittest.TestCase):  # pylint: disable=too-many-public-methods
     def test_only_functions_classes_and_and_methods_are_considered(self):
         self.__assert_signature_docs_override(
             None,
@@ -196,20 +196,6 @@ class TestAnnotatedDocsForMethodSignatures(unittest.TestCase):
             ExampleClass.method_with_decorators
         )
 
-    @skip_above_version(
-        "3.3",
-        "For some reason, version(s) 3.3+ handle annotations of decorated "
-        "functions differently. In 3.4 this seems to be fixed."
-    )
-    def test_decorated_methods_should_not_trigger_inifinite_loop(self):
-        self.__assert_signature_docs_override(
-            ("(*args, **kwargs)", ""),
-            "method",
-            "ExampleClass.method_with_recursive_decorator",
-            ExampleClass.method_with_recursive_decorator
-        )
-
-    @skip_below_or_at_version("3.3", "See the exact explanation above")
     def test_decorated_methods_dont_trigger_inf_loop_but_return_none(self):
         self.__assert_signature_docs_override(
             None,
@@ -218,20 +204,6 @@ class TestAnnotatedDocsForMethodSignatures(unittest.TestCase):
             ExampleClass.method_with_recursive_decorator
         )
 
-    @skip_above_version(
-        "3.3",
-        "For some reason, version(s) 3.3+ handle annotations of decorated " +
-        "functions differently. In 3.4 this seems to be fixed."
-    )
-    def test_decorated_methods_should_not_trigger_errors(self):
-        self.__assert_signature_docs_override(
-            ("(*args, **kwargs)", ""),
-            "method",
-            "ExampleClass.method_with_messed_up_decorator",
-            ExampleClass.method_with_messed_up_decorator
-        )
-
-    @skip_below_or_at_version("3.3", "See the exact explanation above")
     def test_decorated_methods_should_not_trigger_errors_but_return_none(self):
         self.__assert_signature_docs_override(
             None,
@@ -286,7 +258,7 @@ def function_with_annotated_varargs(an_int, *varargs: list, **varkwargs: dict):
     pass
 
 
-def function_with_complex_default_value(a_tuple: tuple=(1, 2, 3)):
+def function_with_complex_default_value(a_tuple: tuple = (1, 2, 3)):
     pass
 
 
@@ -329,8 +301,8 @@ class ExampleClass:
     def method_with_default_value(
             self,
             a_float: float,
-            an_int: int=42,
-            an_str: str=""
+            an_int: int = 42,
+            an_str: str = ""
     ):
         pass
 
@@ -340,7 +312,7 @@ class ExampleClass:
     def method_with_kwonly_arg(self, a_float: float, *, an_int: int):
         pass
 
-    def method_with_default_value_for_self(self=None, an_int: int=42):
+    def method_with_default_value_for_self(self=None, an_int: int = 42):
         pass
 
     def method_with_class_names(self, an_object: SomeClass) -> SomeClass:

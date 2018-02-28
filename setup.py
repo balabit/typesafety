@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Copyright (c) 2013-2016 BalaBit
+# Copyright (c) 2013-2018 Balabit
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -38,7 +38,7 @@ code with type notations. Typesafety is a means to enforce that those notations
 are valid.
 """,
     license="LGPLv2+",
-    version="1.0.3",
+    version="2.0.0",
     author="Viktor Hercinger",
     author_email="viktor.hercinger@balabit.com",
     maintainer="Viktor Hercinger",
