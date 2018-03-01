@@ -17,6 +17,9 @@
 
 import functools
 import inspect
+import typing
+
+from typing_inspect import is_union_type, get_args
 
 
 class TypesafetyError(Exception):
@@ -179,7 +182,7 @@ class Validator(object):
         if annotation is None:
             return "None"
 
-        return annotation.__name__
+        return getattr(annotation, '__name__', str(annotation))
 
     def validate_return_value(self, retval):
         '''
@@ -272,6 +275,12 @@ class Validator(object):
                 for subvalidator in validator
             )
 
+        if is_union_type(validator):
+            return any(
+                self.__is_valid(value, subvalidator)
+                for subvalidator in get_args(validator)
+            )
+
         if isinstance(validator, type):
             return isinstance(value, validator)
 
@@ -289,6 +298,12 @@ class Validator(object):
             return all(
                 self.__is_valid_typecheck_annotation(subvalidator)
                 for subvalidator in validator
+            )
+
+        if is_union_type(validator):
+            return all(
+                self.__is_valid_typecheck_annotation(subvalidator)
+                for subvalidator in get_args(validator)
             )
 
         if isinstance(validator, type):
