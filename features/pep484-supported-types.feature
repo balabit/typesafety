@@ -12,14 +12,8 @@ Feature: typing types are supported in annotations
           def apply_func(func: typing.Callable, *args):
               return func(*args)
           """
-    And that "myapp.py" contains the following code:
+    And that "myapp.py" contains the following type checked code:
           """
-          from typesafety.validator import Validator
-          import typesafety
-
-          typesafety.activate(filter_func=lambda _: True)
-
-          # import annotated code _after_ activating typesafety
           import mylib
 
           mylib.apply_func(lambda a, b: (b, a), 1, 2)
@@ -35,14 +29,8 @@ Feature: typing types are supported in annotations
           def apply_func(func: typing.Callable, *args):
               return func(*args)
           """
-    And that "myapp.py" contains the following code:
+    And that "myapp.py" contains the following type checked code:
           """
-          from typesafety.validator import Validator
-          import typesafety
-
-          typesafety.activate(filter_func=lambda _: True)
-
-          # import annotated code _after_ activating typesafety
           import mylib
 
           mylib.apply_func(None, 1, 2, 3)
@@ -54,7 +42,7 @@ Feature: typing types are supported in annotations
           """
 
   Scenario: calling a function expecting a typing.Union argument passes
-    Given that "mylib.py" contains the following code:
+    Given that "mylib.py" contains the following type checked code:
           """
           import typing
 
@@ -63,12 +51,6 @@ Feature: typing types are supported in annotations
           """
     And that "myapp.py" contains the following code:
           """
-          from typesafety.validator import Validator
-          import typesafety
-
-          typesafety.activate(filter_func=lambda _: True)
-
-          # import annotated code _after_ activating typesafety
           import mylib
 
           mylib.func(42)
@@ -85,14 +67,8 @@ Feature: typing types are supported in annotations
           def func(arg: typing.Union[int, str]):
               return arg
           """
-    And that "myapp.py" contains the following code:
+    And that "myapp.py" contains the following type checked code:
           """
-          from typesafety.validator import Validator
-          import typesafety
-
-          typesafety.activate(filter_func=lambda _: True)
-
-          # import annotated code _after_ activating typesafety
           import mylib
 
           mylib.func(None)
@@ -111,14 +87,8 @@ Feature: typing types are supported in annotations
           def func(arg: typing.Optional[bool]):
               return arg
           """
-    And that "myapp.py" contains the following code:
+    And that "myapp.py" contains the following type checked code:
           """
-          from typesafety.validator import Validator
-          import typesafety
-
-          typesafety.activate(filter_func=lambda _: True)
-
-          # import annotated code _after_ activating typesafety
           import mylib
 
           mylib.func(False)
@@ -135,14 +105,8 @@ Feature: typing types are supported in annotations
           def func(arg: typing.Optional[float]):
               return arg
           """
-    And that "myapp.py" contains the following code:
+    And that "myapp.py" contains the following type checked code:
           """
-          from typesafety.validator import Validator
-          import typesafety
-
-          typesafety.activate(filter_func=lambda _: True)
-
-          # import annotated code _after_ activating typesafety
           import mylib
 
           mylib.func('spam')
