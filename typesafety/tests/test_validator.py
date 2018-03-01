@@ -228,3 +228,15 @@ class TestValidator(unittest.TestCase):  # pylint: disable=too-many-public-metho
         with self.assertRaises(TypesafetyError) as context:
             validator([])
         self.assertIn('typing.Union[int, str]', str(context.exception))
+
+    def test_validate_typing_optional(self):
+        def func(arg: typing.Optional[int]):
+            return arg
+
+        validator = Validator(func)
+
+        self.assertEqual(1, validator(1))
+        self.assertEqual(None, validator(None))
+        with self.assertRaises(TypesafetyError) as context:
+            validator([])
+        self.assertIn('typing.Union[int, NoneType]', str(context.exception))

@@ -102,3 +102,53 @@ Feature: typing types are supported in annotations
           """
           TypesafetyError: Argument 'arg' of function 'func' is invalid (expected: typing.Union[int, str]; got: NoneType)
           """
+
+  Scenario: calling a function expecting a typing.Optional argument passes
+    Given that "mylib.py" contains the following code:
+          """
+          import typing
+
+          def func(arg: typing.Optional[bool]):
+              return arg
+          """
+    And that "myapp.py" contains the following code:
+          """
+          from typesafety.validator import Validator
+          import typesafety
+
+          typesafety.activate(filter_func=lambda _: True)
+
+          # import annotated code _after_ activating typesafety
+          import mylib
+
+          mylib.func(False)
+          mylib.func(None)
+          """
+    When "python3 myapp.py" is run
+    Then it must pass
+
+  Scenario: calling a function expecting a typing.Optional argument fails with wrong argument
+    Given that "mylib.py" contains the following code:
+          """
+          import typing
+
+          def func(arg: typing.Optional[float]):
+              return arg
+          """
+    And that "myapp.py" contains the following code:
+          """
+          from typesafety.validator import Validator
+          import typesafety
+
+          typesafety.activate(filter_func=lambda _: True)
+
+          # import annotated code _after_ activating typesafety
+          import mylib
+
+          mylib.func('spam')
+          """
+    When "python3 myapp.py" is run
+    Then it must fail
+          """
+          TypesafetyError: Argument 'arg' of function 'func' is invalid (expected: typing.Union[float, NoneType]; got: str)
+          """
