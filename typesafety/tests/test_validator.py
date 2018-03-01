@@ -14,7 +14,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-
+import typing
 import unittest
 
 from typesafety.validator import Validator, TypesafetyError
@@ -204,3 +204,15 @@ class TestValidator(unittest.TestCase):  # pylint: disable=too-many-public-metho
             validator(4.2)
 
         self.assertIn("expected: (str, int, None)", str(error.exception))
+
+    def test_validate_typing_callable(self):
+        def func(args: typing.Callable):
+            return args
+
+        def args_example():
+            pass
+
+        validator = Validator(func)
+
+        self.assertEqual(args_example, validator(args_example))
+        self.assertRaises(TypesafetyError, validator, None)
