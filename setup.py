@@ -16,11 +16,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-
-import sys
-if sys.hexversion < 0x03020000:
-    raise RuntimeError("Required python version: 3.2 or newer (current: %s)" % sys.version)
-
 try:
     from setuptools import setup
 
@@ -73,5 +68,6 @@ are valid.
     requires=[
         'nose',
         'sphinx',
+        'typing_inspect',
     ]
 )

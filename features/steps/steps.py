@@ -19,6 +19,7 @@ import sys
 import os.path
 import shlex
 import subprocess
+import re
 
 from nose.tools import *
 from behave import given, when, then
@@ -35,6 +36,7 @@ def write_file(context, file_name):
 
 @when('"{command}" is run')
 def execute_command(context, command: str):
+    command = re.sub(r'^python3', sys.executable, command)
     args = shlex.split(command)
     process = subprocess.Popen(
         args,
