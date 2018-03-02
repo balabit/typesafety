@@ -17,7 +17,7 @@
 
 import functools
 import inspect
-import typing
+import warnings
 
 from typing_inspect import is_union_type, get_args
 
@@ -92,7 +92,7 @@ class Validator(object):
         validator = cls(function)
 
         if not validator.need_validate_arguments and \
-           not validator.need_validate_return_value:
+                not validator.need_validate_return_value:
             return function
 
         @functools.wraps(function)
@@ -222,7 +222,7 @@ class Validator(object):
     def __process_type_annotations(self):
         for name, value in self.__spec.annotations.items():
             if name == 'return' or \
-               not self.__is_valid_typecheck_annotation(value):
+                    not self.__is_valid_typecheck_annotation(value):
                 continue
 
             self.__argument_annotation[name] = value
@@ -295,10 +295,14 @@ class Validator(object):
 
     def __is_valid_typecheck_annotation(self, validator):
         if isinstance(validator, tuple):
-            return all(
+            is_valid = all(
                 self.__is_valid_typecheck_annotation(subvalidator)
                 for subvalidator in validator
             )
+            if is_valid:
+                warnings.warn("Tuple notation is deprecated, use typing.Union or typing.Optional", DeprecationWarning)
+
+            return is_valid
 
         if is_union_type(validator):
             return all(
@@ -310,6 +314,11 @@ class Validator(object):
             return True
 
         if callable(validator):
+            if validator == callable:
+                warnings.warn(
+                    "Using callable() as a notation is deprecated, use typing.Callable instead",
+                    DeprecationWarning
+                )
             return True
 
         if validator is None:
