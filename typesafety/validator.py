@@ -17,6 +17,9 @@
 
 import functools
 import inspect
+import warnings
+
+from typing_inspect import is_union_type, get_args
 
 
 class TypesafetyError(Exception):
@@ -89,7 +92,7 @@ class Validator(object):
         validator = cls(function)
 
         if not validator.need_validate_arguments and \
-           not validator.need_validate_return_value:
+                not validator.need_validate_return_value:
             return function
 
         @functools.wraps(function)
@@ -179,7 +182,7 @@ class Validator(object):
         if annotation is None:
             return "None"
 
-        return annotation.__name__
+        return getattr(annotation, '__name__', str(annotation))
 
     def validate_return_value(self, retval):
         '''
@@ -219,7 +222,7 @@ class Validator(object):
     def __process_type_annotations(self):
         for name, value in self.__spec.annotations.items():
             if name == 'return' or \
-               not self.__is_valid_typecheck_annotation(value):
+                    not self.__is_valid_typecheck_annotation(value):
                 continue
 
             self.__argument_annotation[name] = value
@@ -272,6 +275,12 @@ class Validator(object):
                 for subvalidator in validator
             )
 
+        if is_union_type(validator):
+            return any(
+                self.__is_valid(value, subvalidator)
+                for subvalidator in get_args(validator)
+            )
+
         if isinstance(validator, type):
             return isinstance(value, validator)
 
@@ -286,15 +295,30 @@ class Validator(object):
 
     def __is_valid_typecheck_annotation(self, validator):
         if isinstance(validator, tuple):
-            return all(
+            is_valid = all(
                 self.__is_valid_typecheck_annotation(subvalidator)
                 for subvalidator in validator
+            )
+            if is_valid:
+                warnings.warn("Tuple notation is deprecated, use typing.Union or typing.Optional", DeprecationWarning)
+
+            return is_valid
+
+        if is_union_type(validator):
+            return all(
+                self.__is_valid_typecheck_annotation(subvalidator)
+                for subvalidator in get_args(validator)
             )
 
         if isinstance(validator, type):
             return True
 
         if callable(validator):
+            if validator == callable:
+                warnings.warn(
+                    "Using callable() as a notation is deprecated, use typing.Callable instead",
+                    DeprecationWarning
+                )
             return True
 
         if validator is None:

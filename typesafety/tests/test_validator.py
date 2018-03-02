@@ -14,8 +14,10 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-
+import contextlib
+import typing
 import unittest
+import warnings
 
 from typesafety.validator import Validator, TypesafetyError
 
@@ -204,3 +206,82 @@ class TestValidator(unittest.TestCase):  # pylint: disable=too-many-public-metho
             validator(4.2)
 
         self.assertIn("expected: (str, int, None)", str(error.exception))
+
+    def test_validate_typing_callable(self):
+        def func(args: typing.Callable):
+            return args
+
+        def args_example():
+            pass
+
+        validator = Validator(func)
+
+        self.assertEqual(args_example, validator(args_example))
+        self.assertRaises(TypesafetyError, validator, None)
+
+    def test_validate_typing_union(self):
+        def func(arg: typing.Union[int, str]):
+            return arg
+
+        validator = Validator(func)
+
+        self.assertEqual(1, validator(1))
+        self.assertEqual("spam", validator("spam"))
+        with self.assertRaises(TypesafetyError) as context:
+            validator([])
+        self.assertIn('typing.Union[int, str]', str(context.exception))
+
+    def test_validate_typing_optional(self):
+        def func(arg: typing.Optional[int]):
+            return arg
+
+        validator = Validator(func)
+
+        self.assertEqual(1, validator(1))
+        self.assertEqual(None, validator(None))
+        with self.assertRaises(TypesafetyError) as context:
+            validator([])
+        self.assertIn('typing.Union[int, NoneType]', str(context.exception))
+
+    @contextlib.contextmanager
+    def __capture_warnings(self):
+        old_filters = list(warnings.filters)
+        try:
+            warnings.simplefilter("always")
+            with warnings.catch_warnings(record=True) as log:
+                yield log
+
+        finally:
+            warnings.filters = old_filters
+
+    def test_tuple_notation_is_deprecated(self):
+        def deprecated(arg: (int, str)):
+            return arg
+
+        with self.__capture_warnings() as log:
+            Validator(deprecated)
+
+        self.assertEqual(1, len(log), msg="No warnings found after executing the action")
+        self.assertEqual(log[-1].category, DeprecationWarning)
+
+    def test_callable_as_validator_deprecated(self):
+        def deprecated(arg: callable):
+            return arg
+
+        with self.__capture_warnings() as log:
+            Validator(deprecated)
+
+        self.assertEqual(1, len(log), msg="No warnings found after executing the action")
+        self.assertEqual(log[-1].category, DeprecationWarning)
+
+    def test_callable_validators_are_not_yet_deprecated(self):
+        def validator(argument) -> bool:
+            return True
+
+        def deprecated(arg: validator):
+            return arg
+
+        with self.__capture_warnings() as log:
+            Validator(deprecated)
+
+        self.assertEqual(0, len(log), msg="Some warnings found after executing the action")

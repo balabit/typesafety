@@ -16,11 +16,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-
-import sys
-if sys.hexversion < 0x03020000:
-    raise RuntimeError("Required python version: 3.2 or newer (current: %s)" % sys.version)
-
 try:
     from setuptools import setup
 
@@ -38,7 +33,7 @@ code with type notations. Typesafety is a means to enforce that those notations
 are valid.
 """,
     license="LGPLv2+",
-    version="2.0.0",
+    version="2.1.0",
     author="Viktor Hercinger",
     author_email="viktor.hercinger@balabit.com",
     maintainer="Viktor Hercinger",
@@ -54,9 +49,9 @@ are valid.
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Software Development',
         'Topic :: Software Development :: Testing',
         'Topic :: Documentation :: Sphinx',
@@ -73,5 +68,6 @@ are valid.
     requires=[
         'nose',
         'sphinx',
+        'typing_inspect',
     ]
 )
