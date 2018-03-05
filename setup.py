@@ -65,7 +65,7 @@ are valid.
         ],
         'pytest11': ['pytest_typesafety = typesafety.pytest_typesafety'],
     },
-    requires=[
+    install_requires=[
         'nose',
         'sphinx',
         'typing_inspect',
