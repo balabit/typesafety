@@ -33,7 +33,7 @@ code with type notations. Typesafety is a means to enforce that those notations
 are valid.
 """,
     license="LGPLv2+",
-    version="2.1.0",
+    version="2.1.1",
     author="Viktor Hercinger",
     author_email="viktor.hercinger@balabit.com",
     maintainer="Viktor Hercinger",
@@ -65,7 +65,7 @@ are valid.
         ],
         'pytest11': ['pytest_typesafety = typesafety.pytest_typesafety'],
     },
-    requires=[
+    install_requires=[
         'nose',
         'sphinx',
         'typing_inspect',
