@@ -68,6 +68,5 @@ are valid.
     install_requires=[
         'nose',
         'sphinx',
-        'typing_inspect',
     ]
 )
