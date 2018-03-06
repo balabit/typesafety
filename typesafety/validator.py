@@ -19,7 +19,7 @@ import functools
 import inspect
 import warnings
 
-from typing_inspect import is_union_type, get_args
+from typesafety.typing_inspect import is_union_type, get_union_args
 
 
 class TypesafetyError(Exception):
@@ -174,6 +174,9 @@ class Validator(object):
                 raise TypesafetyError(message)
 
     def __format_expectation(self, annotation):
+        if is_union_type(annotation):
+            return 'typing.Union[{}]'.format(', '.join(entry.__name__ for entry in get_union_args(annotation)))
+
         if isinstance(annotation, tuple):
             return "({})".format(
                 ", ".join(self.__format_expectation(a) for a in annotation)
@@ -278,7 +281,7 @@ class Validator(object):
         if is_union_type(validator):
             return any(
                 self.__is_valid(value, subvalidator)
-                for subvalidator in get_args(validator)
+                for subvalidator in get_union_args(validator)
             )
 
         if isinstance(validator, type):
@@ -307,7 +310,7 @@ class Validator(object):
         if is_union_type(validator):
             return all(
                 self.__is_valid_typecheck_annotation(subvalidator)
-                for subvalidator in get_args(validator)
+                for subvalidator in get_union_args(validator)
             )
 
         if isinstance(validator, type):

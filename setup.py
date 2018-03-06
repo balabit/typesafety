@@ -33,7 +33,7 @@ code with type notations. Typesafety is a means to enforce that those notations
 are valid.
 """,
     license="LGPLv2+",
-    version="2.1.1",
+    version="2.1.2",
     author="Viktor Hercinger",
     author_email="viktor.hercinger@balabit.com",
     maintainer="Viktor Hercinger",
@@ -68,6 +68,5 @@ are valid.
     install_requires=[
         'nose',
         'sphinx',
-        'typing_inspect',
     ]
 )
