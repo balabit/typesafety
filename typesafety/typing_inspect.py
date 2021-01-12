@@ -35,7 +35,10 @@ def is_union_type(cls):
     if hasattr(typing, '_Union'):
         return type(cls) is typing._Union
 
-    return type(cls) is typing.UnionMeta
+    elif hasattr(typing, 'UnionMeta'):
+        return type(cls) is typing.UnionMeta
+
+    return typing.get_origin(cls) is typing.Union
 
 
 def get_union_args(cls):
