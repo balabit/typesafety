@@ -23,14 +23,12 @@ from typesafety.typing_inspect import is_union_type, get_union_args
 
 class TestTypingInspect(unittest.TestCase):
     def test_inspect_union_type(self):
-        self.assertTrue(is_union_type(typing.Union))
         self.assertTrue(is_union_type(typing.Union[int, str]))
         self.assertTrue(is_union_type(typing.Optional[int]))
         self.assertFalse(is_union_type(typing.List[int]))
         self.assertFalse(is_union_type(typing.Any))
 
     def test_get_union_args(self):
-        self.assertEqual((), get_union_args(typing.Union))
         self.assertEqual((int, str), get_union_args(typing.Union[int, str]))
         self.assertEqual((int, type(None)), get_union_args(typing.Optional[int]))
         self.assertRaises(TypeError, get_union_args, typing.List[int])
